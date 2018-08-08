@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="show_pkg_notifications"
+        android:title="@string/show_pkg_notifications_title"
+        android:summary="@string/show_pkg_notifications_summary"
+        android:defaultValue="true" />
+    <PreferenceScreen
+        android:title="@string/appearance_title"
+        android:summary="@string/appearance_summary">
+        <PreferenceCategory android:title="@string/icons">
+            <at.jclehner.appopsxposed.IconPreference
+                android:key="icon_appinfo"
+                android:title="@string/icon_appinfo_title"
+                android:summary="@string/icon_appinfo_summary"
+                android:defaultValue="0" />
+            <at.jclehner.appopsxposed.IconPreference
+                android:key="icon_settings"
+                android:title="@string/icon_settings_title"
+                android:summary="@string/icon_settings_summary"
+                android:defaultValue="0" />
+            <Preference
+                android:title="@string/note_icons_title"
+                android:summary="@string/note_icons_summary"
+                android:enabled="false" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceCategory android:title="@string/advanced_settings_title">
+        <ListPreference
+            android:key="force_variant"
+            android:title="@string/title_force_variant"
+            android:summary="@string/automatic"
+            android:entries="@array/variants"
+            android:defaultValue="" />
+        <PreferenceScreen
+            android:key="hacks"
+            android:title="@string/hacks_title"
+            android:summary="@string/hacks_summary">
+            <CheckBoxPreference
+                android:key="use_hack_fix_prune"
+                android:title="@string/use_hack_fix_prune_title"
+                android:summary="@string/use_hack_fix_prune_summary"
+                android:defaultValue="false" />
+            <CheckBoxPreference
+                android:key="use_hack_boot_completed"
+                android:title="@string/use_hack_boot_completed_title"
+                android:summary="@string/use_hack_boot_completed_summary"
+                android:defaultValue="false" />
+            <CheckBoxPreference
+                android:key="use_hack_wake_lock"
+                android:title="@string/use_hack_wake_lock_title"
+                android:summary="@string/use_hack_wake_lock_summary"
+                android:defaultValue="false"
+                android:enabled="@bool/is_sdk_ge_19" />
+            <CheckBoxPreference
+                android:key="use_hack_dont_group_ops"
+                android:title="Do not group ops"
+                android:summary="More fine grained control over ops. VERY EXPERIMENTAL!"
+                android:defaultValue="false" />
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:title="@string/import_export_title"
+            android:summary="@string/import_export_summary">
+            <Preference
+                android:key="backup_create"
+                android:title="@string/backup_create_title" />
+            <Preference
+                android:key="backup_restore"
+                android:title="@string/backup_restore_title" />
+            <Preference
+                android:key="backup_file"
+                android:title="@string/backup_file_title"
+                android:enabled="false" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">AppOpsXposed Re</string>
+
+    <string name="description">Enables AppOps on Android 4.3+ and adds it to the native settings app.</string>
+    <string name="btn_launch">Launch</string>
+    <string name="btn_help">Help</string>
+    <string name="xposed_not_installed">The Xposed Installer is not installed on your system and you are running Android 4.4+. \"%1$s\"
+        is likely disabled, but you may try to launch it using the \"%2$s\" button below. Please note that your device must be rooted to install the
+        Xposed Framework.</string>
+    <string name="xperia_allowed">Allowed</string>
+    <string name="xperia_ignored">Ignored</string>
+    <string name="xperia_always_ask">Always ask</string>
+    <string name="advanced_settings_summary">Changing these settings may break AppOpsXposed. Use with care!</string>
+    <string name="advanced_settings_title">Advanced</string>
+    <string name="show_launcher_icon_title">Launcher icon</string>
+    <string name="show_launcher_icon_summary">Show a launcher icon. This is required only if \"App ops\" cannot be launched
+        from your ROM\'s \"Settings\" app.</string>
+    <string name="title_force_variant">Force variant</string>
+    <string name="use_layout_fix_title">Layout fix</string>
+    <string name="use_layout_fix_summary">Use a fix that alleviates layout issues in the per-app \"App ops\" screen.</string>
+    <string name="automatic">(Automatic)</string>
+    <string name="failsafe_mode_title">Failsafe mode</string>
+    <string name="failsafe_mode_summary">Use only the minimum patches required for \"App ops\" to work; in this case, a launcher icon
+	    must be used. Use this if you experience crashes.</string>
+    <string name="hacks_title">Hacks</string>
+    <string name="hacks_summary">Experimental features. Use at your own risk!</string>
+    <string name="use_hack_boot_completed_title">Add OP_BOOT_COMPLETED</string>
+    <string name="use_hack_boot_completed_summary">Allows you to control whether an app is allowed to
+	    start at boot. This replaces the \"%1$s\" option (which has been merged with the \"%2$s\" option);
+	    if \"%1$s\" is currently disabled for an app, it will not boot if you
+	    enable this setting and reboot your device!
+	</string>
+
+    <string name="hacks_dialog_title">Warning</string>
+    <string name="hacks_dialog_message">These features are <strong>highly experimental</strong> and may cause your phone to
+	    get stuck in a boot-loop and become unusable. Use <em>only</em> if you know how to disable Xposed (or this module) from
+	    recovery mode or a shell. You have been warned!</string>
+
+    <string name="use_hack_wake_lock_title">Fix OP_WAKE_LOCK</string>
+    <string name="use_hack_wake_lock_summary">Fixes the \"%1$s"\" option.</string>
+    <string name="about">About</string>
+    <string name="build_bugreport_title">Build bug report</string>
+    <string name="build_bugreport_summary">Submit via email/Dropbox/Google Drive/etc.; requires root.</string>
+    <string name="building_toast">Building&#8230;</string>
+    <string name="use_hack_pm_crash_title">Fix PackageManager</string>
+    <string name="use_hack_pm_crash_summary">Fixes a crash in a system component that prevents \"%1$s\" from loading.</string>
+    <string name="toast_needs_root">This operation requires root.</string>
+    <string name="show_changed_only_title">Show changed</string>
+    <string name="compatibility_mode_title">Compatibility mode</string>
+    <string name="compatibility_mode_summary">Use an alternate AppOps implementation to improve compatibility on most devices.</string>
+    <string name="checking_root">Checking root&#8230;</string>
+    <string name="settings">Settings</string>
+    <string name="xposed_settings_warning">These settings have no effect when not running as an Xposed module!</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="will_reboot">Device will reboot!</string>
+    <string name="aox_settings">AppOpsXposed Settings</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="must_reboot_device">Must reboot device!</string>
+    <string name="permissions_not_granted">\"%1$s\" permissions were not granted. Note that you have to reboot after
+	    enabling \"%2$s\" or installing as a system app. If this message persists, submit a detailed bug report!</string>
+    <string name="verbose_logs_title">Verbose logs</string>
+    <string name="verbose_logs_summary">Before submitting a bug report, enable this and reboot!</string>
+
+    <string name="use_hack_fix_prune_title">Don\'t prune database</string>
+    <string name="use_hack_fix_prune_summary">Use this if ops are reset on reboot for apps installed on sd card.</string>
+    <string name="reset_all">Reset all</string>
+    <string name="package_updated">Updated</string>
+    <string name="show_pkg_notifications_title">Notifications</string>
+    <string name="show_pkg_notifications_summary">Show notifications for newly installed and updated apps.</string>
+    <string name="appearance_title">Appearance</string>
+    <string name="appearance_summary">Customize appearance of AppOpsXposed.</string>
+    <string name="icons">Icons</string>
+    <string name="icon_appinfo_title">App info</string>
+    <string name="icon_appinfo_summary">Icon used for the \"App info\" screen.</string>
+    <string name="icon_settings_title">Settings</string>
+    <string name="icon_settings_summary">Icon used in the \"Settings\" app (if applicable).</string>
+    <string name="note_icons_title">Important</string>
+    <string name="note_icons_summary">Changes to these settings may require a reboot.</string>
+    <string name="import_export_title">Backup</string>
+    <string name="import_export_summary">Import/export settings to/from external storage.</string>
+    <string name="backup_create_title">Export</string>
+    <string name="backup_restore_title">Import</string>
+    <string name="backup_file_title">File</string>
+    <string name="failed">Failed.</string>
+    <string name="success">Success.</string>
+    <string name="light_theme_title">Light theme</string>
+    <string name="light_theme_summary">@null</string>
+    <string name="enable_module">AppOpsXposed is not running as an Xposed module; activate it in %1$s!</string>
+    <string name="cannot_enable">AppOpsXposed is not running as an Xposed module, and Xposed is not installed on your system.</string>
+    <string name="install_system_app_helper">Install system-app helper (requires root)?</string>
+</resources>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="description">Aktiviert AppOps unter Android 4.3+ und fügt es zur \"Einstellungen\"-App hinzu.</string>
+    <string name="btn_launch">Starten</string>
+    <string name="btn_help">Hilfe</string>
+    <string name="xposed_not_installed">Der Xposed Installer ist nicht installiert und Du verwendest Android 4.4+. \"%1$s\"
+        ist wahrscheinlich deaktiviert, aber Du kannst versuchen es durch den \"%2$s\"-Button zu starten. Bitte beachte dass
+        Dein Gerät gerootet sein muss, um das Xposed Framework zu verwenden.</string>
+	<string name="xperia_allowed">Erlaubt</string>
+	<string name="xperia_ignored">Ignoriert</string>
+	<string name="xperia_always_ask">Immer fragen</string>
+    <string name="advanced_settings_summary">Das Ändern dieser Einstellungen kann zu Abstürzen führen. Mit Vorsicht verwenden!</string>
+    <string name="advanced_settings_title">Erweitert</string>
+    <string name="show_launcher_icon_title">Icon</string>
+    <string name="show_launcher_icon_summary">Ein Icon im Launcher anzeigen. Dies ist nur dann notwendig, wenn \"App Vorgänge\" nicht in der
+        \"Einstellungen\"-App Deiner ROM zu finden ist.</string>
+    <string name="title_force_variant">Variante Erzwingen</string>
+    <string name="use_layout_fix_title">Layout-Fix</string>
+    <string name="use_layout_fix_summary">Aktiviert einen Patch der Layoutfehler im \"App Vorgänge\"-Bildschirm einer App verursacht.</string>
+    <string name="automatic">(Automatisch)</string>
+	<string name="failsafe_mode_title">Failsafe-Modus</string>
+	<string name="failsafe_mode_summary">Verwendet nur minimale Patches um \"App Vorgänge\" zu aktivieren; die Verwendung eines
+	    Launcher-Icons ist dann zwingend notwendig. Verwende diese Option wenn Abstürze auftreten. </string>
+	<string name="hacks_title">Hacks</string>
+	<string name="hacks_summary">Experimentelle Features. Benutzung auf eigene Gefahr!</string>
+		<string name="use_hack_boot_completed_title">OP_BOOT_COMPLETED hinzufügen</string>
+	<string name="use_hack_boot_completed_summary">Ermöglicht zu steuern, ob eine App nach dem Hochfahren
+	    starten darf. Dies ersetzt die \"%1$s\"-Option (die mit der \"%2$s\"-Option zusammengelegt wurde);
+	    wenn die \"%1$s\"-Option derzeit für eine App deaktiviert ist, wird sie nach dem Hochfahren
+	    nicht starten, wenn Du diese Einstellung aktivierst und dein Gerät neu startest!</string>
+	<string name="hacks_dialog_title">Warnung</string>
+	<string name="hacks_dialog_message">Diese Features sind <strong>höchst experimentell</strong> und können Dein
+	    Gerät in einen Boot-Loop stürzen und somit unbenutzbar machen. <em>Nur</em> verwenden, wenn Du weißt, wie man
+	    Xposed (oder dieses Modul) mittels Recovery-Modus oder einer Shell deaktivieren kann! Du wurdest gewarnt.</string>
+
+	<string name="use_hack_wake_lock_title">OP_WAKE_LOCK-Fix</string>
+	<string name="use_hack_wake_lock_summary">Behebt einen Fehler in der \"%1$s\"-Option.</string>
+	<string name="about">Über</string>
+	<string name="build_bugreport_title">Bugreport erstellen</string>
+	<string name="build_bugreport_summary">Mit Email/Dropbox/Google Drive/etc. übermitteln; benötigt
+	    Root-Rechte</string>
+	<string name="building_toast">Erstelle&#8230;</string>
+	
+	<string name="use_hack_pm_crash_title">PackageManager-Fix</string>
+	<string name="use_hack_pm_crash_summary">Behebt einen Fehler in einer Systemkomponente, der
+	    das Laden von \"%1$s\" verhindert.</string>
+	<string name="toast_needs_root">Dieser Vorgang benötigt Root-Rechte.</string>
+	<string name="show_changed_only_title">Geänderte zeigen</string>
+	<string name="compatibility_mode_title">Kompatibilitätsmodus</string>
+	<string name="compatibility_mode_summary">Eine andere AppOps Implementierung verwenden, um die Kompatibilität mit den meisten Geräten zu gewährleisten.</string>
+	<string name="checking_root">Überprüfe Root-Rechte&#8230;</string>
+	<string name="settings">Einstellungen</string>
+	<string name="xposed_settings_warning">Diese Einstellungen funktionieren nur, wenn Xposed verfügbar und aktiviert ist.</string>
+	<string name="uninstall">Deinstallieren</string>
+	<string name="will_reboot">Gerät wird neu starten!</string>
+	<string name="aox_settings">AppOpsXposed Einstellungen</string>
+	<string name="dont_show_again">Nicht erneut zeigen</string>
+	<string name="must_reboot_device">Gerät muss neu gestartet werden!</string>
+	<string name="permissions_not_granted">\"%1$s\"-Berechtigungen sind nicht verfügbar. Bitte beachten,
+	    dass das Gerät nach Aktivieren von \"%2$s\" oder Installation as Systemprogramm neu gestartet werden muss! Wenn diese
+	    Nachricht weiterhin besteht, bitte einen detaillierten Fehlerbericht übermitteln.</string>
+	<string name="verbose_logs_title">Ausführliche Logs</string>
+	<string name="verbose_logs_summary">Vor einem Bugreport aktivieren und Gerät neustarten!</string>
+
+	<string name="use_hack_fix_prune_title">Datenbank nicht säubern</string>
+	<string name="use_hack_fix_prune_summary">Behebt ein Problem bei dem die Einstellungen von Apps auf der SD-Karte beim 
+	    Neustart verloren gehen.</string>
+	<string name="reset_all">Alle zurücksetzen</string>
+	<string name="package_updated">Aktualisiert</string>
+	<string name="show_pkg_notifications_title">Benachrichtigungen</string>
+	<string name="show_pkg_notifications_summary">Zeige Benachrichtigungen für neu installierte und aktualisierte Apps.</string>
+	<string name="appearance_title">Design</string>
+	<string name="appearance_summary">Passe das Design von AppOpsXposed an.</string>
+	<string name="icons">Icons</string>
+	<string name="icon_appinfo_title">App-Info</string>
+	<string name="icon_appinfo_summary">Icon für die \"App-Info\"-Ansicht.</string>
+	<string name="icon_settings_title">Settings</string>
+	<string name="icon_settings_summary">Icon für die \"Einstellungen\"-App (falls verfügbar).</string>
+	<string name="note_icons_title">Wichtig</string>
+	<string name="note_icons_summary">Ändern dieser Einstellungen erfordert einen Neustart.</string>
+	<string name="import_export_title">Backup</string>
+	<string name="import_export_summary">Einstellungen auf externen Speicher exportieren oder von dort importieren.</string>
+	<string name="backup_create_title">Exportieren</string>
+	<string name="backup_restore_title">Importieren</string>
+	<string name="backup_file_title">Datei</string>
+	<string name="failed">Fehlgeschlagen.</string>
+	<string name="success">Erfolgreich.</string>
+	<string name="light_theme_title">Helles Theme</string>
+	<string name="enable_module">AppOpsXposed läuft nicht als Xposed-Modul; aktiviere es in %1$s!</string>
+	<string name="cannot_enable">AppOpsXposed läuft nicht als Xposed-Modul, und Xposed ist auf diesem System nicht installiert.</string>
+	<string name="install_system_app_helper">System-App-Helfer installieren?</string>
+</resources>

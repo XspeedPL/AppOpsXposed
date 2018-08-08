@@ -62,13 +62,17 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
     }
 
     @Override
-    protected final int getVersion() {
+    protected final long getVersion() {
         return 13005;
     }
 
     @Override
     protected final void reloadPrefs(Intent in) {
+    }
 
+    @Override
+    protected final String getModulePackage() {
+        return "at.jclehner.appopsxposed.re";
     }
 
     @Override

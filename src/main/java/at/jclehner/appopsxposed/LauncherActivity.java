@@ -63,7 +63,7 @@ public class LauncherActivity extends Activity {
     //                   Install as system app?
 
     private boolean checkModuleStatus() {
-        if (!Util.isXposedModuleEnabled() && !Util.hasAppOpsPermissions(this)) {
+        if (BaseSettings.getActiveVer() == -1 && !Util.hasAppOpsPermissions(this)) {
             final Intent intent;
             String message;
 

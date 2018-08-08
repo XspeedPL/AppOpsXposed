@@ -2,6 +2,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">AppOpsXposed Re</string>
 
+    <string name="pref_authors_d">Original creator: caspase\n
+Re version creator: Xspeed\n
+English translator: there were none\n
+\n
+Special thanks\n
+Authors of Xposed Framework:\n
+rovo89 &amp; Tungstwenty</string>
+
     <string name="description">Enables AppOps on Android 4.3+ and adds it to the native settings app.</string>
     <string name="btn_launch">Launch</string>
     <string name="btn_help">Help</string>

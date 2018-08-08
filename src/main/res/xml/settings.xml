@@ -6,6 +6,7 @@
         android:summary="@string/show_pkg_notifications_summary"
         android:defaultValue="true" />
     <PreferenceScreen
+        android:key="s_appearance"
         android:title="@string/appearance_title"
         android:summary="@string/appearance_summary">
         <PreferenceCategory android:title="@string/icons">
@@ -59,6 +60,7 @@
                 android:defaultValue="false" />
         </PreferenceScreen>
         <PreferenceScreen
+            android:key="s_backup"
             android:title="@string/import_export_title"
             android:summary="@string/import_export_summary">
             <Preference

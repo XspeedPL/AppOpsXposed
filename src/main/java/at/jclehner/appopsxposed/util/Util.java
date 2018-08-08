@@ -48,10 +48,9 @@ import at.jclehner.appopsxposed.AppOpsActivity;
 import at.jclehner.appopsxposed.re.BuildConfig;
 import dalvik.system.DexFile;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+import xeed.library.ui.BaseSettings;
 
 public final class Util {
-    @SuppressWarnings("FieldCanBeLocal")
-    private static boolean sIsXposedModuleEnabled = false;
     public static boolean sIsBootCompletedHackWorking = false;
 
     public interface Logger {
@@ -95,16 +94,12 @@ public final class Util {
             logger.log(s);
     }
 
-    public static boolean isXposedModuleEnabled() {
-        return sIsXposedModuleEnabled;
-    }
-
     public static boolean isBootCompletedHackWorking() {
         return sIsBootCompletedHackWorking;
     }
 
     public static boolean isXposedModuleOrSystemApp(Context context) {
-        return isXposedModuleEnabled() || isSystemApp(context);
+        return BaseSettings.getActiveVer() != -1 || isSystemApp(context);
     }
 
     public static boolean containsManufacturer(String str) {

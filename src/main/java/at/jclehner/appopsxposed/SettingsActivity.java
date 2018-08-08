@@ -24,7 +24,6 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnShowListener;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -59,7 +58,7 @@ public class SettingsActivity extends BaseSettings {
         final SharedPreferences prefs = mgr.getSharedPreferences();
 
         ListPreference lp = (ListPreference) mgr.findPreference("force_variant");
-        callOnChangeListenerWithCurrentValue(prefs, lp);
+        onPreferenceChanged(mgr, prefs, lp.getKey());
 
         CharSequence[] entries = lp.getEntries();
         CharSequence[] values = new CharSequence[entries.length];
@@ -90,36 +89,14 @@ public class SettingsActivity extends BaseSettings {
 
         p = mgr.findPreference("hacks");
         p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (prefs.getBoolean("show_hacks_warning_dialog", true))
+                if (prefs.getBoolean("show_hacks_warning_dialog", true)) {
                     showHacksWarningDialog(prefs, preference);
-
-                return true;
+                    return true;
+                } else return false;
             }
         });
-
-        // \u2013 is an en dash!
-        /*p.setSummary("Copyright (C) Joseph C. Lehner 2013\u20132015\n"
-                + "<joseph.c.lehner@gmail.com> / caspase @XDA\n"
-                + "Nougat/Oreo compatibility patches by\n"
-                + "<xspeedpl@windowslive.com> / Xspeed @XDA");*/
-
-        if (BuildConfig.DEBUG) {
-            p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(SettingsActivity.this, AppOpsActivity.class);
-                    startActivity(intent);
-
-                    return true;
-                }
-            });
-
-            p.setEnabled(true);
-        }
 
         String[] keys = {"icon_appinfo", "icon_settings"};
         for (String key : keys) {
@@ -221,16 +198,6 @@ public class SettingsActivity extends BaseSettings {
                 : R.string.failed, Toast.LENGTH_SHORT).show();
     }
 
-    private void callOnChangeListenerWithCurrentValue(SharedPreferences prefs, Preference p) {
-        Object value;
-        if (p instanceof CheckBoxPreference)
-            value = prefs.getBoolean(p.getKey(), false);
-        else
-            value = prefs.getString(p.getKey(), "");
-
-        onPreferenceChange(p, value);
-    }
-
     private void showHacksWarningDialog(final SharedPreferences prefs, Preference pref) {
         AlertDialog.Builder ab = new AlertDialog.Builder(this);
         ab.setCancelable(false);
@@ -247,7 +214,7 @@ public class SettingsActivity extends BaseSettings {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //((PreferenceScreen) pref).getDialog().dismiss();
+                getSupportFragmentManager().popBackStack();
             }
         });
 

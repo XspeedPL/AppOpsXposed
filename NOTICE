@@ -1,0 +1,11 @@
+AppOpsXposed Re - AppOps for Android 4.3+
+
+Based on:
+AppOpsXposed - AppOps for Android 4.3+
+Copyright 2013-2016 Joseph C. Lehner
+
+AppOpsXposed Re uses code licensed under the Apache Source License:
+
+* AppOps{Category,Details,State,Summary}.java
+	Copyright (C) 2013 The Android Open Source Project
+

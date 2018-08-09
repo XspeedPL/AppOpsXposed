@@ -77,7 +77,7 @@ public class HTC extends ApkVariant {
         return super.getAppOpsDetailsFragmentName();
     }
 
-    private void fixLaunchTarget(LoadPackageParam lpparam) throws ClassNotFoundException {
+    private void fixLaunchTarget(LoadPackageParam lpparam) {
         try {
             XposedHelpers.findAndHookMethod("com.android.settings.framework.content.plugin.HtcPluginMetadata", lpparam.classLoader,
                     "fillLaunchTarget", "com.htc.preference.HtcPreferenceActivity.Header", ActivityInfo.class, new XC_MethodHook() {

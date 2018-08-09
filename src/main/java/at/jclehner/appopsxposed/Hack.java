@@ -32,13 +32,11 @@ import at.jclehner.appopsxposed.hacks.GeneralHacks;
 import at.jclehner.appopsxposed.hacks.MiuiHacks;
 import at.jclehner.appopsxposed.re.BuildConfig;
 import at.jclehner.appopsxposed.util.Util;
-import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public abstract class Hack implements IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitPackageResources {
+public abstract class Hack implements IXposedHookLoadPackage, IXposedHookZygoteInit {
     public static class PreferenceInfo {
         public final boolean defaultValue = false;
         public final String key;
@@ -125,11 +123,6 @@ public abstract class Hack implements IXposedHookLoadPackage, IXposedHookZygoteI
     }
 
     protected void handleLoadAnyPackage(LoadPackageParam lpparam) throws Throwable {
-
-    }
-
-    @Override
-    public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
 
     }
 

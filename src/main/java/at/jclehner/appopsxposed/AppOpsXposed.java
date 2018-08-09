@@ -27,7 +27,6 @@ import at.jclehner.appopsxposed.util.Res;
 import at.jclehner.appopsxposed.util.Util;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
@@ -90,26 +89,6 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
 
         for (int i = 0; i != Res.icons.length; ++i)
             Res.icons[i] = resparam.res.addResource(Res.modRes, Constants.ICONS[i]);
-
-        String forceVariant = mPrefs.getString("force_variant", "");
-        for (ApkVariant variant : ApkVariant.getAllMatching(resparam.packageName, forceVariant)) {
-            try {
-                variant.handleInitPackageResources(resparam);
-                break;
-            } catch (Throwable t) {
-                log(variant.getClass().getSimpleName() + ": [!!]");
-                Util.debug(t);
-            }
-        }
-
-        for (Hack hack : Hack.getAllEnabled(true)) {
-            try {
-                hack.handleInitPackageResources(resparam);
-            } catch (Throwable t) {
-                log(hack.getClass().getSimpleName() + ": [!!]");
-                Util.debug(t);
-            }
-        }
     }
 
     @Override
@@ -117,10 +96,6 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
         super.handleLoadPackage(param);
 
         boolean isSettings = ApkVariant.isSettingsPackage(param.packageName);
-
-        if (MODULE_PACKAGE.equals(param.packageName)) {
-            XposedHelpers.findAndHookMethod(Util.class.getName(), param.classLoader, "isXposedModuleEnabled", XC_MethodReplacement.returnConstant(true));
-        }
 
         for (Hack hack : Hack.getAllEnabled(true)) {
             try {

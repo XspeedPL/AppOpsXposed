@@ -52,11 +52,9 @@ import at.jclehner.appopsxposed.variants.OmniROM;
 import at.jclehner.appopsxposed.variants.Oppo;
 import at.jclehner.appopsxposed.variants.Samsung;
 import at.jclehner.appopsxposed.variants.Sony;
-import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 /**
@@ -70,7 +68,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
  * When extending this class, note that you <em>must</em> return the wildcard value
  * {@link #ANY} for a string property that should be ignored.
  */
-public abstract class ApkVariant implements IXposedHookLoadPackage, IXposedHookInitPackageResources {
+public abstract class ApkVariant implements IXposedHookLoadPackage {
     public interface ClassChecker {
         boolean exists(String className);
     }
@@ -91,8 +89,8 @@ public abstract class ApkVariant implements IXposedHookLoadPackage, IXposedHookI
                 new CyanogenMod(prefs),
                 new OmniROM(prefs),
                 new Oppo(prefs),
-                new Minimal(prefs),
-                new AOSP(prefs) // must be the last entry!
+                new AOSP(prefs),
+                new Minimal(prefs)
         };
     }
 
@@ -150,11 +148,6 @@ public abstract class ApkVariant implements IXposedHookLoadPackage, IXposedHookI
 
     @Override
     public abstract void handleLoadPackage(LoadPackageParam lpparam) throws Throwable;
-
-    @Override
-    public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
-        // empty
-    }
 
     protected Object onCreateAppOpsHeader(Context context, int addAfterHeaderId) {
         Header appOpsHeader = new Header();

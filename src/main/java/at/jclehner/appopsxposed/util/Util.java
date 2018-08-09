@@ -26,8 +26,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -135,10 +133,7 @@ public final class Util {
                 | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
         if (packageName != null) {
-            Bundle args = new Bundle();
-            args.putString(AppOpsDetails.ARG_PACKAGE_NAME, packageName);
-            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, args);
-            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, AppOpsDetails.class.getName());
+            intent.putExtra(AppOpsDetails.ARG_PACKAGE_NAME, packageName);
         }
 
         return intent;

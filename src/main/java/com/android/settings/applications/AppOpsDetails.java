@@ -18,7 +18,6 @@ package com.android.settings.applications;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -49,7 +48,7 @@ import at.jclehner.appopsxposed.util.AppOpsManagerWrapper.PackageOpsWrapper;
 public class AppOpsDetails extends Fragment {
     static final String TAG = "AppOpsDetails";
 
-    public static final String ARG_PACKAGE_NAME = "package";
+    public static final String ARG_PACKAGE_NAME = "at.jclehner.appopsxposed.re.Package";
 
     private AppOpsState mState;
     private PackageManager mPm;
@@ -65,13 +64,13 @@ public class AppOpsDetails extends Fragment {
         View appSnippet = mRootView.findViewById(R.id.app_snippet);
         appSnippet.setPaddingRelative(0, appSnippet.getPaddingTop(), 0, appSnippet.getPaddingBottom());
 
-        ImageView icon = (ImageView) appSnippet.findViewById(R.id.app_icon);
+        ImageView icon = appSnippet.findViewById(R.id.app_icon);
         icon.setImageDrawable(mPm.getApplicationIcon(pkgInfo.applicationInfo));
         // Set application name.
-        TextView label = (TextView) appSnippet.findViewById(R.id.app_name);
+        TextView label = appSnippet.findViewById(R.id.app_name);
         label.setText(mPm.getApplicationLabel(pkgInfo.applicationInfo));
         // Version number of application
-        mAppVersion = (TextView) appSnippet.findViewById(R.id.app_size);
+        mAppVersion = appSnippet.findViewById(R.id.app_size);
 
         StringBuilder sb = new StringBuilder(pkgInfo.packageName);
 
@@ -84,15 +83,7 @@ public class AppOpsDetails extends Fragment {
     }
 
     private String retrieveAppEntry() {
-        Bundle args = getArguments();
-        String packageName = (args != null) ? args.getString(ARG_PACKAGE_NAME) : null;
-        if (packageName == null) {
-            Intent intent = (args == null) ?
-                    getActivity().getIntent() : (Intent) args.getParcelable("intent");
-            if (intent != null) {
-                packageName = intent.getData().getSchemeSpecificPart();
-            }
-        }
+        String packageName = getArguments().getString(ARG_PACKAGE_NAME);
         try {
             mPackageInfo = mPm.getPackageInfo(packageName,
                     PackageManager.GET_DISABLED_COMPONENTS |

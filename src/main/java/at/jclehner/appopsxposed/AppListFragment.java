@@ -30,6 +30,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -423,8 +424,9 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
         Fragment f = new AppOpsDetails();
         f.setArguments(args);
 
-        getActivity().getSupportFragmentManager().beginTransaction().add(0, f).commit();
-        //getActivity().startPreferenceFragment(f, true);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(android.R.id.content, f).addToBackStack(null).commit();
     }
 
     private static final int MENU_RESET = 0;

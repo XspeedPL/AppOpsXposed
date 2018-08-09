@@ -22,7 +22,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -53,18 +53,16 @@ public class AppOpsActivity extends AppCompatActivity {
         }
 
         Intent in = getIntent();
-        String pkg = in.getStringExtra("package");
-        if ("android.settings.APP_OPS_SETTINGS".equals(in.getAction()) || pkg != null) {
-            if (pkg != null) {
-                AppOpsDetails details = new AppOpsDetails();
-                details.setArguments(in.getExtras());
-                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, details).commit();
-            } else {
-                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new AppOpsSummary()).commit();
-            }
-        } else if (!in.hasExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT)) {
-            getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new AppOpsSummary()).commit();
+        String pkg = in.getStringExtra(AppOpsDetails.ARG_PACKAGE_NAME);
+        Fragment frag;
+        if (pkg != null) {
+            frag = new AppOpsDetails();
+            frag.setArguments(in.getExtras());
+            getSupportFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
+        } else {
+            frag = new AppOpsSummary();
         }
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
     }
 
     @Override

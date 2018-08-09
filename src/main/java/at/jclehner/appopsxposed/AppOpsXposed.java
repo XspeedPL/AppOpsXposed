@@ -72,7 +72,7 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
 
     @Override
     protected final String getModulePackage() {
-        return "at.jclehner.appopsxposed.re";
+        return MODULE_PACKAGE;
     }
 
     @Override

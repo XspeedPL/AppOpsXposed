@@ -151,7 +151,7 @@ public abstract class ApkVariant implements IXposedHookLoadPackage {
 
     protected Object onCreateAppOpsHeader(Context context, int addAfterHeaderId) {
         Header appOpsHeader = new Header();
-        appOpsHeader.title = getAppOpsTitle();
+        appOpsHeader.title = getAppOpsTitle(context);
         appOpsHeader.id = R.id.app_ops_settings;
         appOpsHeader.iconRes = getAppOpsHeaderIcon();
         appOpsHeader.intent = Util.createAppOpsIntent(null);
@@ -171,19 +171,19 @@ public abstract class ApkVariant implements IXposedHookLoadPackage {
         if (icon < 0 || icon >= Constants.ICONS.length)
             icon = Constants.ICON_LAUNCHER;
 
-        return Res.icons[icon];
+        return Res.getIcon(icon);
     }
 
     protected int getDefaultAppOpsHeaderIcon() {
         return Constants.ICON_LAUNCHER;
     }
 
-    protected String getAppOpsTitle() {
+    protected String getAppOpsTitle(Context context) {
         int appOpsTitleId = Res.getSettingsIdentifier("string/app_ops_setting");
         if (appOpsTitleId != 0)
-            return Res.getSettingsString(appOpsTitleId);
+            return Res.getSettingsString(context, appOpsTitleId);
 
-        return Res.getModString(R.string.app_ops_settings);
+        return Res.getModString(context, R.string.app_ops_settings);
     }
 
     protected String getAppOpsDetailsFragmentName() {
@@ -294,24 +294,25 @@ public abstract class ApkVariant implements IXposedHookLoadPackage {
                 "onCreateOptionsMenu", Menu.class, MenuInflater.class, new XC_MethodHook() {
 
                     @Override
-                    protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         Menu menu = (Menu) param.args[0];
 
                         int icon = mPrefs.getInt("icon_appinfo", Constants.ICON_LAUNCHER);
 
+                        final Fragment f = (Fragment) param.thisObject;
+
                         MenuItem item = menu.findItem(R.id.app_ops_settings);
                         if (item == null)
-                            item = menu.add(0, R.id.app_ops_settings, 0, getAppOpsTitle());
+                            item = menu.add(0, R.id.app_ops_settings, 0, getAppOpsTitle(f.getActivity()));
 
                         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                        item.setTitle(Res.modRes.getString(R.string.app_ops_settings));
-                        item.setIcon(Res.modRes.getDrawable(Constants.ICONS[icon]));
+                        item.setTitle(Res.getModString(f.getActivity(), R.string.app_ops_settings));
+                        item.setIcon(Res.getModDrawable(f.getActivity(), Constants.ICONS[icon]));
                         item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
                             @SuppressWarnings("deprecation")
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                Fragment f = (Fragment) param.thisObject;
                                 Activity activity = f.getActivity();
 
                                 debug("onMenuItemClick:\n" +
@@ -320,7 +321,7 @@ public abstract class ApkVariant implements IXposedHookLoadPackage {
                                         "  args=" + f.getArguments());
 
                                 Bundle args = f.getArguments() == null ? new Bundle() : f.getArguments();
-                                String pkg = null;
+                                String pkg;
 
                                 if (!args.containsKey("package")) {
                                     try {

@@ -18,6 +18,7 @@
 
 package at.jclehner.appopsxposed.variants;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -113,7 +114,7 @@ public class AOSP extends ApkVariant {
                                 Object tile = tileClazz.newInstance();
                                 XposedHelpers.setLongField(tile, "id", R.id.app_ops_settings);
                                 XposedHelpers.setIntField(tile, "iconRes", getAppOpsHeaderIcon());
-                                XposedHelpers.setObjectField(tile, "title", getAppOpsTitle());
+                                XposedHelpers.setObjectField(tile, "title", getAppOpsTitle((Activity) param.thisObject));
                                 XposedHelpers.setObjectField(tile, "intent", Util.createAppOpsIntent(null));
 
                                 // Try three approaches: addTile(int, DashboardTile) may not be

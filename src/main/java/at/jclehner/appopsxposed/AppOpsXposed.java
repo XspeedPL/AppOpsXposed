@@ -20,20 +20,16 @@ package at.jclehner.appopsxposed;
 
 import android.app.AndroidAppHelper;
 import android.content.Intent;
-import android.content.res.XModuleResources;
 
-import at.jclehner.appopsxposed.util.Constants;
 import at.jclehner.appopsxposed.util.Res;
 import at.jclehner.appopsxposed.util.Util;
-import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import xeed.library.xposed.BaseModule;
 
-public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageResources {
+public class AppOpsXposed extends BaseModule {
     public static final String MODULE_PACKAGE = "at.jclehner.appopsxposed.re";
     public static final String SETTINGS_PACKAGE = "com.android.settings";
     public static final String SETTINGS_MAIN_ACTIVITY = SETTINGS_PACKAGE + ".Settings";
@@ -45,12 +41,12 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
 
             @Override
             public void log(Throwable t) {
-                XposedBridge.log(t);
+                XposedBridge.log("AOX: " + t);
             }
 
             @Override
             public void log(String s) {
-                XposedBridge.log(s);
+                XposedBridge.log("AOX: " + s);
             }
         };
     }
@@ -61,7 +57,7 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
     }
 
     @Override
-    protected final long getVersion() {
+    public final long getVersion() {
         return 13005;
     }
 
@@ -70,25 +66,23 @@ public class AppOpsXposed extends BaseModule implements IXposedHookInitPackageRe
     }
 
     @Override
-    protected final String getModulePackage() {
+    public final String getModulePackage() {
         return MODULE_PACKAGE;
     }
 
     @Override
     public void initZygote(StartupParam param) {
         super.initZygote(param);
-        Res.modRes = XModuleResources.createInstance(param.modulePath, null);
+        //if (Res.modRes == null) {
+        //    AssetManager assets = (AssetManager) XposedHelpers.newInstance(AssetManager.class);
+        //    XposedHelpers.callMethod(assets, "addAssetPath", param.modulePath);
+        //    Res.modRes = new Resources(assets, null, null);
+        //    XposedHelpers.callStaticMethod(AndroidAppHelper.class, "addActiveResource",
+        //            new Class[]{String.class, Float.TYPE, Boolean.TYPE, Resources.class},
+        //            param.modulePath, Res.modRes.hashCode(), false, Res.modRes);
+        //}
         ApkVariant.initVariants(mPrefs);
         Hack.initHacks(mPrefs);
-    }
-
-    @Override
-    public void handleInitPackageResources(InitPackageResourcesParam resparam) {
-        if (!ApkVariant.isSettingsPackage(resparam.packageName))
-            return;
-
-        for (int i = 0; i != Res.icons.length; ++i)
-            Res.icons[i] = resparam.res.addResource(Res.modRes, Constants.ICONS[i]);
     }
 
     @Override

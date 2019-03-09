@@ -31,10 +31,8 @@ import java.util.Map;
 
 import at.jclehner.appopsxposed.AppOpsXposed;
 import at.jclehner.appopsxposed.Hack;
-import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.AppOpsManagerWrapper;
 import at.jclehner.appopsxposed.util.OpsLabelHelper;
-import at.jclehner.appopsxposed.util.Res;
 import at.jclehner.appopsxposed.util.Util;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -356,7 +354,7 @@ public class BootCompletedHack extends Hack {
                     bootupTemplate);
 
             Object[][] adapterReturnValueInfos = {
-                    {"getPageTitle", Res.getModString(R.string.app_ops_categories_bootup)},
+                    {"getPageTitle", "Bootup"},
                     {"getItem", bootupCategoryFragment}
             };
 

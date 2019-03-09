@@ -98,7 +98,7 @@ public class LG extends AOSP {
                         }
 
                         Preference p = new Preference(pf.getActivity());
-                        p.setTitle(Res.modRes.getString(R.string.app_ops_settings));
+                        p.setTitle(Res.getModString(pf.getActivity(), R.string.app_ops_settings));
                         p.setIcon(getAppOpsHeaderIcon());
                         p.setIntent(Util.createAppOpsIntent(null));
                         p.setOrder(order);

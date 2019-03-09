@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
 import at.jclehner.appopsxposed.AppOpsActivity;
 import at.jclehner.appopsxposed.re.BuildConfig;
 import dalvik.system.DexFile;
@@ -70,7 +71,7 @@ public final class Util {
         }
     };
 
-    private static int logLevel = BuildConfig.DEBUG ? 100 : 1;
+    private static final int logLevel = BuildConfig.DEBUG ? 100 : 1;
 
     public static void log(Throwable t) {
         if (logLevel >= 1)
@@ -246,6 +247,7 @@ public final class Util {
             return mList.isEmpty();
         }
 
+        @NonNull
         @Override
         public String toString() {
             if (mList.isEmpty()) return "";

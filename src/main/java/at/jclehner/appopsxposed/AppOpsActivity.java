@@ -22,26 +22,29 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.android.settings.applications.AppOpsDetails;
 import com.android.settings.applications.AppOpsSummary;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.TaskStackBuilder;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.Util;
 import xeed.library.common.SettingsManager;
 import xeed.library.ui.BaseSettings;
 
 public class AppOpsActivity extends AppCompatActivity {
+    private int mThemeId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = SettingsManager.getInstance(this).getPrefs();
         BaseSettings.reloadThemes(prefs);
-        setTheme(BaseSettings.getActTh());
+        setTheme(mThemeId = BaseSettings.getActTh());
 
         if (!Util.hasAppOpsPermissions(this)) {
             AlertDialog.Builder ab = new AlertDialog.Builder(this);
@@ -63,6 +66,17 @@ public class AppOpsActivity extends AppCompatActivity {
             frag = new AppOpsSummary();
         }
         getSupportFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mThemeId != BaseSettings.getActTh()) {
+            TaskStackBuilder.create(this)
+                    .addNextIntent(new Intent(this, AppOpsActivity.class))
+                    .addNextIntent(getIntent())
+                    .startActivities();
+        }
     }
 
     @Override

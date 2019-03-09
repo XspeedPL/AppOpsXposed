@@ -25,8 +25,6 @@ import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +38,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.AppOpsManagerWrapper;
 import at.jclehner.appopsxposed.util.AppOpsManagerWrapper.OpEntryWrapper;
@@ -76,14 +77,14 @@ public class AppOpsDetails extends Fragment {
 
         if (pkgInfo.versionName != null) {
             sb.append("\n");
-            sb.append(getActivity().getString(R.string.version_text, pkgInfo.versionName));
+            sb.append(getString(R.string.version_text, pkgInfo.versionName));
         }
 
         mAppVersion.setText(sb);
     }
 
     private String retrieveAppEntry() {
-        String packageName = getArguments().getString(ARG_PACKAGE_NAME);
+        String packageName = requireArguments().getString(ARG_PACKAGE_NAME);
         try {
             mPackageInfo = mPm.getPackageInfo(packageName,
                     PackageManager.GET_DISABLED_COMPONENTS |
@@ -93,7 +94,7 @@ public class AppOpsDetails extends Fragment {
             mPackageInfo = null;
         }
 
-        if (getActivity().getPackageName().equals(packageName)) {
+        if (requireActivity().getPackageName().equals(packageName)) {
             Toast.makeText(getActivity(), "\uD83D\uDE22", Toast.LENGTH_SHORT).show();
         }
 
@@ -107,7 +108,7 @@ public class AppOpsDetails extends Fragment {
 
         setAppLabelAndIcon(mPackageInfo);
 
-        Resources res = getActivity().getResources();
+        Resources res = requireActivity().getResources();
 
         mOperationsSection.removeAllViews();
         boolean hasBootupSwitch = false;
@@ -139,7 +140,7 @@ public class AppOpsDetails extends Fragment {
                                         pgi.loadIcon(mPm));
                             }
                         }
-                    } catch (NameNotFoundException e) {
+                    } catch (NameNotFoundException ignored) {
                     }
                 }
                 ((TextView) view.findViewById(R.id.op_name)).setText(
@@ -147,7 +148,7 @@ public class AppOpsDetails extends Fragment {
                 ((TextView) view.findViewById(R.id.op_time)).setText(
                         entry.getTimeText(res, true));
 
-                Switch sw = (Switch) view.findViewById(R.id.switchWidget);
+                Switch sw = view.findViewById(R.id.switchWidget);
                 final int switchOp = AppOpsManagerWrapper.opToSwitch(firstOp.getOp());
                 sw.setChecked(modeToChecked(switchOp, entry.getPackageOps()));
                 sw.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
@@ -170,22 +171,16 @@ public class AppOpsDetails extends Fragment {
     }
 
     static boolean modeToChecked(int mode) {
-        if (mode == AppOpsManagerWrapper.MODE_ALLOWED)
-            return true;
-        if (mode == AppOpsManagerWrapper.MODE_DEFAULT)
-            return true;
-        if (mode == AppOpsManagerWrapper.MODE_ASK)
-            return true;
-        if (mode == AppOpsManagerWrapper.MODE_HINT)
-            return true;
-
-        return false;
+        return mode == AppOpsManagerWrapper.MODE_ALLOWED
+                || mode == AppOpsManagerWrapper.MODE_DEFAULT
+                || mode == AppOpsManagerWrapper.MODE_ASK
+                || mode == AppOpsManagerWrapper.MODE_HINT;
     }
 
     private void setIntentAndFinish(boolean finish, boolean appChanged) {
-        getArguments().putBoolean("chg", appChanged);
+        requireArguments().putBoolean("chg", appChanged);
         if (finish) {
-            getActivity().getSupportFragmentManager().beginTransaction()
+            requireActivity().getSupportFragmentManager().beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                     .remove(this).commit();
         }
@@ -203,8 +198,8 @@ public class AppOpsDetails extends Fragment {
         super.onCreate(icicle);
 
         mState = new AppOpsState(getActivity());
-        mPm = getActivity().getPackageManager();
-        mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mPm = requireActivity().getPackageManager();
+        mInflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mAppOps = AppOpsManagerWrapper.from(getActivity());
 
         retrieveAppEntry();
@@ -213,13 +208,12 @@ public class AppOpsDetails extends Fragment {
     }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.app_ops_details, container, false);
         //Utils.prepareCustomPreferencesList(container, view, view, false);
 
         mRootView = view;
-        mOperationsSection = (LinearLayout) view.findViewById(R.id.operations_section);
+        mOperationsSection = view.findViewById(R.id.operations_section);
         return view;
     }
 

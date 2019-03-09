@@ -25,11 +25,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +40,12 @@ import com.android.settings.applications.AppOpsState.AppOpEntry;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 import at.jclehner.appopsxposed.re.R;
 
 public class AppOpsCategory extends ListFragment implements
@@ -52,12 +53,12 @@ public class AppOpsCategory extends ListFragment implements
 
     private static final int RESULT_APP_DETAILS = 1;
 
-    AppOpsState mState;
+    private AppOpsState mState;
 
     // This is the Adapter being used to display the list's data.
-    AppListAdapter mAdapter;
+    private AppListAdapter mAdapter;
 
-    String mCurrentPkgName;
+    private String mCurrentPkgName;
 
     public AppOpsCategory() {
     }
@@ -161,7 +162,6 @@ public class AppOpsCategory extends ListFragment implements
                     onReleaseResources(apps);
                 }
             }
-            List<AppOpEntry> oldApps = apps;
             mApps = apps;
 
             if (isStarted()) {
@@ -173,8 +173,8 @@ public class AppOpsCategory extends ListFragment implements
             // At this point we can release the resources associated with
             // 'oldApps' if needed; now that the new result is delivered we
             // know that it is no longer in use.
-            if (oldApps != null) {
-                onReleaseResources(oldApps);
+            if (apps != null) {
+                onReleaseResources(apps);
             }
         }
 
@@ -365,7 +365,7 @@ public class AppOpsCategory extends ListFragment implements
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         AppOpEntry entry = mAdapter.getItem(position);
         if (entry != null) {
             mCurrentPkgName = entry.getAppEntry().getApplicationInfo().packageName;
@@ -373,6 +373,7 @@ public class AppOpsCategory extends ListFragment implements
         }
     }
 
+    @NonNull
     @Override
     public Loader<List<AppOpEntry>> onCreateLoader(int id, Bundle args) {
         Bundle fargs = getArguments();
@@ -384,7 +385,7 @@ public class AppOpsCategory extends ListFragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<List<AppOpEntry>> loader, List<AppOpEntry> data) {
+    public void onLoadFinished(@NonNull Loader<List<AppOpEntry>> loader, List<AppOpEntry> data) {
         // Set the new data in the adapter.
         mAdapter.setData(data);
 
@@ -397,7 +398,7 @@ public class AppOpsCategory extends ListFragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<List<AppOpEntry>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<AppOpEntry>> loader) {
         // Clear the data in the adapter.
         mAdapter.setData(null);
     }

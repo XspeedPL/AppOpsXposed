@@ -71,20 +71,6 @@ public class AppOpsState {
         mOpSummaries = OpsLabelHelper.getOpSummaries(context);
         //mOpLabels = context.getResources().getTextArray(R.array.app_ops_labels);
         mOpLabels = OpsLabelHelper.getOpLabels(context);
-
-        /*if (AppOpsManagerWrapper.hasFakeBootCompletedOp()) {
-            mOpSummaries[AppOpsManagerWrapper.OP_VIBRATE] = mOpSummaries[AppOpsManagerWrapper.OP_VIBRATE]
-                    + "/" + mOpSummaries[AppOpsManagerWrapper.OP_POST_NOTIFICATION];
-
-            mOpLabels[AppOpsManagerWrapper.OP_VIBRATE] = mOpLabels[AppOpsManagerWrapper.OP_VIBRATE]
-                    + "/" + mOpLabels[AppOpsManagerWrapper.OP_POST_NOTIFICATION];
-
-            final CharSequence summary = OpsLabelHelper.getPermissionLabel(context,
-                    android.Manifest.permission.RECEIVE_BOOT_COMPLETED);
-
-            mOpSummaries[AppOpsManagerWrapper.OP_POST_NOTIFICATION] = summary;
-            mOpLabels[AppOpsManagerWrapper.OP_POST_NOTIFICATION] = Util.capitalizeFirst(summary);
-        }*/
     }
 
     public static class OpsTemplate implements Parcelable {

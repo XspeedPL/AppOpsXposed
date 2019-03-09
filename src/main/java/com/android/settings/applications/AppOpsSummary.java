@@ -19,12 +19,6 @@ package com.android.settings.applications;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +27,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerTabStrip;
+import androidx.viewpager.widget.ViewPager;
 import at.jclehner.appopsxposed.AppListFragment;
 import at.jclehner.appopsxposed.SettingsActivity;
 import at.jclehner.appopsxposed.re.R;
@@ -66,6 +67,7 @@ public class AppOpsSummary extends Fragment {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             Fragment f = new AppOpsCategory();
@@ -108,9 +110,9 @@ public class AppOpsSummary extends Fragment {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            if (state == ViewPager.SCROLL_STATE_IDLE) {
-                //updateCurrentTab(mCurPos);
-            }
+            //if (state == ViewPager.SCROLL_STATE_IDLE) {
+            //    updateCurrentTab(mCurPos);
+            //}
         }
     }
 
@@ -121,7 +123,7 @@ public class AppOpsSummary extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // initialize the inflater
         mInflater = inflater;
 
@@ -142,7 +144,7 @@ public class AppOpsSummary extends Fragment {
             tabs.setTabIndicatorColorResource(android.R.color.holo_blue_light);
         } else {
             TypedValue val = new TypedValue();
-            getActivity().getTheme().resolveAttribute(android.R.attr.colorAccent, val, true);
+            requireActivity().getTheme().resolveAttribute(android.R.attr.colorAccent, val, true);
             tabs.setTabIndicatorColor(val.data);
         }
 
@@ -157,12 +159,12 @@ public class AppOpsSummary extends Fragment {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.add(R.string.show_changed_only_title).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .replace(android.R.id.content, AppListFragment.newInstance(true)).addToBackStack(null).commit();
                 return true;
@@ -172,7 +174,7 @@ public class AppOpsSummary extends Fragment {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                getActivity().startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             }
         });

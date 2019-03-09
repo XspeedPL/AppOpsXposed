@@ -27,17 +27,17 @@ import android.content.DialogInterface.OnShowListener;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.PreferenceScreen;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 import at.jclehner.appopsxposed.re.BuildConfig;
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.AppOpsManagerWrapper;
@@ -57,7 +57,7 @@ public class SettingsActivity extends BaseSettings {
         addPreferencesToCategory(R.xml.settings, Category.general);
         final SharedPreferences prefs = mgr.getSharedPreferences();
 
-        ListPreference lp = (ListPreference) mgr.findPreference("force_variant");
+        ListPreference lp = mgr.findPreference("force_variant");
         onPreferenceChanged(mgr, prefs, lp.getKey());
 
         CharSequence[] entries = lp.getEntries();
@@ -92,7 +92,7 @@ public class SettingsActivity extends BaseSettings {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (prefs.getBoolean("show_hacks_warning_dialog", true)) {
-                    showHacksWarningDialog(prefs, preference);
+                    showHacksWarningDialog(prefs);
                     return true;
                 } else return false;
             }
@@ -143,7 +143,7 @@ public class SettingsActivity extends BaseSettings {
         Preference pref = mgr.findPreference(key);
         if ("force_variant".equals(key)) {
             String variant = prefs.getString(key, "");
-            if (variant.isEmpty())
+            if (variant != null && variant.isEmpty())
                 pref.setSummary(R.string.automatic);
             else
                 pref.setSummary(variant);
@@ -151,7 +151,7 @@ public class SettingsActivity extends BaseSettings {
             boolean failsafe = prefs.getBoolean(key, false);
 
             if (failsafe && !prefs.getBoolean("show_launcher_icon", true)) {
-                CheckBoxPreference p = (CheckBoxPreference) mgr.findPreference("show_launcher_icon");
+                CheckBoxPreference p = mgr.findPreference("show_launcher_icon");
                 p.setChecked(true);
             }
 
@@ -163,7 +163,7 @@ public class SettingsActivity extends BaseSettings {
             boolean useCompatibilityMode = prefs.getBoolean(key, false);
 
             if (useCompatibilityMode && !prefs.getBoolean("show_launcher_icon", true)) {
-                CheckBoxPreference p = (CheckBoxPreference) mgr.findPreference("show_launcher_icon");
+                CheckBoxPreference p = mgr.findPreference("show_launcher_icon");
                 p.setChecked(true);
 
                 Toast.makeText(this, R.string.must_reboot_device, Toast.LENGTH_LONG).show();
@@ -198,7 +198,7 @@ public class SettingsActivity extends BaseSettings {
                 : R.string.failed, Toast.LENGTH_SHORT).show();
     }
 
-    private void showHacksWarningDialog(final SharedPreferences prefs, Preference pref) {
+    private void showHacksWarningDialog(final SharedPreferences prefs) {
         AlertDialog.Builder ab = new AlertDialog.Builder(this);
         ab.setCancelable(false);
         ab.setIcon(android.R.drawable.ic_dialog_alert);

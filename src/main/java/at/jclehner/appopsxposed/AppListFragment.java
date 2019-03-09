@@ -28,13 +28,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.StrikethroughSpan;
@@ -60,6 +53,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.AppOpsManagerWrapper;
 import at.jclehner.appopsxposed.util.AppOpsManagerWrapper.OpEntryWrapper;
@@ -76,7 +76,7 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
         private final PackageManager mPm;
         private List<PackageInfoData> mList;
 
-        public AppListAdapter(Context context) {
+        AppListAdapter(Context context) {
             mPm = context.getPackageManager();
         }
 
@@ -173,7 +173,7 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
     }
 
     static class LoaderDataComparator implements Comparator<PackageInfoData> {
-        private static Collator sCollator = Collator.getInstance();
+        private static final Collator sCollator = Collator.getInstance();
 
         @Override
         public int compare(PackageInfoData lhs, PackageInfoData rhs) {
@@ -195,7 +195,7 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
     }
 
     static class AppListLoader extends AsyncTaskLoader<List<PackageInfoData>> {
-        private static String[] sOpPerms = getOpPermissions();
+        private static final String[] sOpPerms = getOpPermissions();
 
         private final AppOpsState mState;
         private final PackageManager mPm;
@@ -328,13 +328,14 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
 
         private boolean isAppOpsPermission(String permName) {
             for (String opPerm : sOpPerms) {
-                if (opPerm != null && permName.equals(opPerm))
+                if (permName.equals(opPerm))
                     return true;
             }
 
             return false;
         }
 
+        @SuppressWarnings("JavaReflectionMemberAccess")
         @TargetApi(19)
         private static String[] getOpPermissions() {
             try {
@@ -383,13 +384,13 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
     @NonNull
     @Override
     public Loader<List<PackageInfoData>> onCreateLoader(int id, Bundle args) {
-        return new AppListLoader(getActivity(), getArguments().getBoolean("show_changed_ops_only"));
+        return new AppListLoader(requireActivity(), requireArguments().getBoolean("show_changed_ops_only"));
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<PackageInfoData>> loader, List<PackageInfoData> data) {
         mAdapter.setData(data);
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
 
         if (isResumed())
             setListShown(true);
@@ -407,24 +408,24 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
-        mInflater = getActivity().getLayoutInflater();
-        mAdapter = new AppListAdapter(getActivity());
+        mInflater = requireActivity().getLayoutInflater();
+        mAdapter = new AppListAdapter(requireActivity());
 
         setListAdapter(mAdapter);
         setListShown(false);
 
-        getLoaderManager().initLoader(0, null, this);
+        LoaderManager.getInstance(this).initLoader(0, null, this);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         Bundle args = new Bundle();
         args.putString(AppOpsDetails.ARG_PACKAGE_NAME, ((ViewHolder) v.getTag()).packageName);
 
         Fragment f = new AppOpsDetails();
         f.setArguments(args);
 
-        getActivity().getSupportFragmentManager().beginTransaction()
+        requireFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(android.R.id.content, f).addToBackStack(null).commit();
     }
@@ -432,7 +433,7 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
     private static final int MENU_RESET = 0;
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(0, MENU_RESET, 0, R.string.reset_all);
         item.setIcon(android.R.drawable.ic_menu_delete);
@@ -440,12 +441,12 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         menu.findItem(MENU_RESET).setEnabled(mAdapter.mList != null);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (mAdapter.mList == null || item.getItemId() != MENU_RESET)
             return false;
 
@@ -467,6 +468,6 @@ public class AppListFragment extends ListFragment implements LoaderManager.Loade
             }
         }
 
-        getLoaderManager().restartLoader(0, null, this);
+        LoaderManager.getInstance(this).restartLoader(0, null, this);
     }
 }

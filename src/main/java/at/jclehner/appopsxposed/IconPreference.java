@@ -1,10 +1,9 @@
 package at.jclehner.appopsxposed;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.TouchDelegate;
@@ -17,10 +16,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import androidx.annotation.LayoutRes;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
 import at.jclehner.appopsxposed.re.R;
 
 public class IconPreference extends Preference implements AdapterView.OnItemSelectedListener {
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private Spinner mSpinner;
     private int[] mIcons;
 
@@ -113,12 +115,12 @@ public class IconPreference extends Preference implements AdapterView.OnItemSele
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return getView(position, null, R.layout.icon_spinner);
+            return getView(position, R.layout.icon_spinner);
         }
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            View v = getView(position, null, R.layout.icon_dropdown);
+            View v = getView(position, R.layout.icon_dropdown);
             v.setBackgroundResource(position != mValue ? R.drawable.checkerboard
                     : R.drawable.checkerboard_framed);
             return v;
@@ -134,12 +136,10 @@ public class IconPreference extends Preference implements AdapterView.OnItemSele
             return mIcons[position];
         }
 
-        private View getView(int position, View view, int layoutResId) {
-            if (view == null)
-                view = mInflater.inflate(layoutResId, null);
-
-            ((ImageView) view).setImageResource(mIcons[position]);
-
+        @SuppressLint("InflateParams")
+        private ImageView getView(int position, @LayoutRes int layoutResId) {
+            ImageView view = (ImageView) mInflater.inflate(layoutResId, null, false);
+            view.setImageResource(mIcons[position]);
             return view;
         }
     };

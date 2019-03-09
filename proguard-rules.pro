@@ -1,4 +1,5 @@
 -keep public class at.jclehner.appopsxposed.AppOpsXposed
+-keep public class at.jclehner.appopsxposed.ResourcesXposed
 
 -keep public class * extends at.jclehner.appopsxposed.ApkVariant
 

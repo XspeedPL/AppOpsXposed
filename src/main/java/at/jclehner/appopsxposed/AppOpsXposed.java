@@ -21,6 +21,9 @@ package at.jclehner.appopsxposed;
 import android.app.AndroidAppHelper;
 import android.content.Intent;
 
+import java.io.IOException;
+
+import at.jclehner.appopsxposed.re.BuildConfig;
 import at.jclehner.appopsxposed.util.Res;
 import at.jclehner.appopsxposed.util.Util;
 import de.robv.android.xposed.XC_MethodHook;
@@ -58,7 +61,7 @@ public class AppOpsXposed extends BaseModule {
 
     @Override
     public final long getVersion() {
-        return 13005;
+        return BuildConfig.VERSION_CODE;
     }
 
     @Override
@@ -71,7 +74,7 @@ public class AppOpsXposed extends BaseModule {
     }
 
     @Override
-    public void initZygote(StartupParam param) {
+    public void initZygote(StartupParam param) throws IOException {
         super.initZygote(param);
         //if (Res.modRes == null) {
         //    AssetManager assets = (AssetManager) XposedHelpers.newInstance(AssetManager.class);

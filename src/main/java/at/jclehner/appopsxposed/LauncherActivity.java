@@ -21,17 +21,20 @@ package at.jclehner.appopsxposed;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
+
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.Util;
 import xeed.library.common.SettingsManager;
+import xeed.library.common.Utils;
 import xeed.library.ui.BaseSettings;
 
 public class LauncherActivity extends Activity {
@@ -42,8 +45,12 @@ public class LauncherActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = SettingsManager.getInstance(this).getPrefs();
-        BaseSettings.reloadThemes(prefs);
+        SettingsManager.getInstance(this);
+
+        Context ctx = ContextCompat.createDeviceProtectedStorageContext(this);
+        if (ctx == null) ctx = this;
+
+        BaseSettings.reloadThemes(ctx.getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE));
         setTheme(BaseSettings.getActTh());
 
         if (checkModuleStatus())

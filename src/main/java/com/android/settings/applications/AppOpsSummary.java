@@ -34,6 +34,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerTabStrip;
 import androidx.viewpager.widget.ViewPager;
+
 import at.jclehner.appopsxposed.AppListFragment;
 import at.jclehner.appopsxposed.SettingsActivity;
 import at.jclehner.appopsxposed.re.R;
@@ -64,7 +65,7 @@ public class AppOpsSummary extends Fragment {
     class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
 
         public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @NonNull

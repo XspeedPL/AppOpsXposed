@@ -35,17 +35,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.settings.applications.AppOpsState.AppOpEntry;
-
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
+
+import com.android.settings.applications.AppOpsState.AppOpEntry;
+
+import java.util.Collections;
+import java.util.List;
+
 import at.jclehner.appopsxposed.re.R;
 
 public class AppOpsCategory extends ListFragment implements
@@ -349,7 +350,7 @@ public class AppOpsCategory extends ListFragment implements
         setListShown(false);
 
         // Prepare the loader.
-        getLoaderManager().initLoader(0, null, this);
+        LoaderManager.getInstance(this).initLoader(0, null, this);
     }
 
     // utility method used to start sub activity

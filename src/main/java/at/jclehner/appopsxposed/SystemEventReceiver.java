@@ -15,9 +15,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import androidx.core.content.ContextCompat;
+
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.Util;
 import xeed.library.common.SettingsManager;
+import xeed.library.common.Utils;
 
 public class SystemEventReceiver extends BroadcastReceiver {
     @Override
@@ -27,7 +30,12 @@ public class SystemEventReceiver extends BroadcastReceiver {
     }
 
     private void showPackageNotification(Context context, Intent intent) {
-        SharedPreferences sp = SettingsManager.getInstance(context).getPrefs();
+        SettingsManager.getInstance(context);
+
+        Context ctx = ContextCompat.createDeviceProtectedStorageContext(context);
+        if (ctx == null) ctx = context;
+
+        SharedPreferences sp = ctx.getSharedPreferences(Utils.PREFS_NAME, Context.MODE_PRIVATE);
         if (!sp.getBoolean("show_pkg_notifications", true) || !Util.isXposedModuleOrSystemApp(context))
             return;
 

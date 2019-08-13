@@ -24,10 +24,7 @@ android {
 
 dependencies {
     compileOnly project(':hax')
-    implementation project(':library')
-
-    implementation 'androidx.appcompat:appcompat:+'
-    implementation 'androidx.preference:preference:+'
-
     compileOnly 'de.robv.android.xposed:api:+'
+
+    implementation project(':library')
 }

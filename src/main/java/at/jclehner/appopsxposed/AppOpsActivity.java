@@ -19,20 +19,22 @@
 package at.jclehner.appopsxposed;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.settings.applications.AppOpsDetails;
 import com.android.settings.applications.AppOpsSummary;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.TaskStackBuilder;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import at.jclehner.appopsxposed.re.R;
 import at.jclehner.appopsxposed.util.Util;
 import xeed.library.common.SettingsManager;
+import xeed.library.common.Utils;
 import xeed.library.ui.BaseSettings;
 
 public class AppOpsActivity extends AppCompatActivity {
@@ -42,8 +44,12 @@ public class AppOpsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SharedPreferences prefs = SettingsManager.getInstance(this).getPrefs();
-        BaseSettings.reloadThemes(prefs);
+        SettingsManager.getInstance(this);
+
+        Context ctx = ContextCompat.createDeviceProtectedStorageContext(this);
+        if (ctx == null) ctx = this;
+
+        BaseSettings.reloadThemes(ctx.getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE));
         setTheme(mThemeId = BaseSettings.getActTh());
 
         if (!Util.hasAppOpsPermissions(this)) {
@@ -55,28 +61,24 @@ public class AppOpsActivity extends AppCompatActivity {
             ab.show();
         }
 
-        Intent in = getIntent();
-        String pkg = in.getStringExtra(AppOpsDetails.ARG_PACKAGE_NAME);
-        Fragment frag;
-        if (pkg != null) {
-            frag = new AppOpsDetails();
-            frag.setArguments(in.getExtras());
+        if (savedInstanceState == null) {
+            Intent in = getIntent();
+            String pkg = in.getStringExtra(AppOpsDetails.ARG_PACKAGE_NAME);
+            Fragment frag;
+            if (pkg != null) {
+                frag = new AppOpsDetails();
+                frag.setArguments(in.getExtras());
+            } else {
+                frag = new AppOpsSummary();
+            }
             getSupportFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
-        } else {
-            frag = new AppOpsSummary();
         }
-        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, frag).commit();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mThemeId != BaseSettings.getActTh()) {
-            TaskStackBuilder.create(this)
-                    .addNextIntent(new Intent(this, AppOpsActivity.class))
-                    .addNextIntent(getIntent())
-                    .startActivities();
-        }
+        if (mThemeId != BaseSettings.getActTh()) recreate();
     }
 
     @Override

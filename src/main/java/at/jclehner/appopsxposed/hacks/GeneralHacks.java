@@ -68,7 +68,7 @@ public class GeneralHacks extends Hack {
         // the {UPDATE,GET}_APP_OPS_STATS permissions have a protectionLevel of 0 (normal).
         XposedBridge.hookAllMethods(pmSvcClazz, "grantPermissionsLPw", new XC_MethodHook() {
 
-            private ThreadLocal<Map<String, Integer>> mRestoreInfo = new ThreadLocal<Map<String, Integer>>() {
+            private final ThreadLocal<Map<String, Integer>> mRestoreInfo = new ThreadLocal<Map<String, Integer>>() {
                 @Override
                 protected Map<String, Integer> initialValue() {
                     return new HashMap<>();
@@ -143,7 +143,7 @@ public class GeneralHacks extends Hack {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {
                         Throwable t = param.getThrowable();
-                        if (t != null && (t instanceof NullPointerException))
+                        if (t instanceof NullPointerException)
                             param.setResult(null);
                     }
                 });
@@ -157,7 +157,7 @@ public class GeneralHacks extends Hack {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {
                         Throwable t = param.getThrowable();
-                        if (t != null && (t instanceof IllegalArgumentException)) {
+                        if (t instanceof IllegalArgumentException) {
                             int op = (Integer) param.args[0];
                             if (op >= 0 && op < AppOpsManagerWrapper._NUM_OP) {
                                 param.setResult(null);

@@ -85,12 +85,10 @@ public abstract class Sony extends AOSP {
 
     @Override
     protected String[] indicatorClasses() {
-        String[] classes = {
+        return new String[]{
                 "com.sonymobile.settings.SomcSettingsHeader",
                 "com.sonymobile.settings.preference.util.SomcPreferenceActivity",
                 "com.sonymobile.settings.preference.util.SomcSettingsPreferenceFragment"
         };
-
-        return classes;
     }
 }
